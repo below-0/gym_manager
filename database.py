@@ -40,24 +40,8 @@ def get_all_members():
 	rows = cursor.fetchall()
 	members =[]
 	for row in rows:
-		member = Member (row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+		member = Member (row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], id=row[0])
 		members.append(member) 
 	return members
 
-
-if __name__ == "__main__":
-	"""
-	m = Member(
-		"darren", "cairns ",
-		"24-05-1989", "Black Belt",
-		0, "07454052135",
-		"test@email.com"
-		)
-	insert_member(m)
-	
-	"""
-	delete_member(14)
-	members = get_all_members()
-	for member in members:
-		print(member)
 

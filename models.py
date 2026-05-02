@@ -14,7 +14,7 @@ class Member:
 	def __init__(
 		self, first_name, last_name,
 		date_of_birth, belt, stripes,
-		phone, email, status = "Active"
+		phone, email, status = "Active", id=None
 		):
 		self.first_name = first_name
 		self.last_name =last_name
@@ -28,9 +28,11 @@ class Member:
 		self.email = email
 		self._date_joined = date.today()
 		self.status = status
+		self.id = id
 
 	def __str__(self):
 		return (
+			f"Member ID: {self.id} | "
 			f"{self.first_name} {self.last_name} | "
 			f"{self.rank} | {self.age} | {self.phone} | "
 			f"{self.email} | Joined: {self.date_joined.strftime("%d-%b-%Y")} | "
@@ -129,27 +131,5 @@ class Member:
 		if value not in STATUS:
 			raise ValueError("not a valid membership status")
 		self._status = value
-	
-
-
-	
-
-	
-
-
-
-
-
-
-
-if __name__ == "__main__":
-	m = Member(
-		"andrew", "cairns ",
-		"24-05-1986", "Black Belt",
-		0, "07454052135",
-		"test@email.com"
-		)
-	print(m)
-
 
 	
