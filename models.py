@@ -1,5 +1,8 @@
-from datetime import date, datetime
+from datetime import date, datetime, time
+from pydantic import BaseModel, Field, field_validator, computed_field, ConfigDict
 
+DAYS = ["Monday", "Tueday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+GI_NOGI = ["Gi", "No gi"]
 STATUS = ["Active", "Paused", "Cancelled"]
 BELT_ADULT = ["White Belt", "Blue Belt", "Purple Belt", "Brown Belt", "Black Belt"]
 BELT_CHILD = [
@@ -32,8 +35,8 @@ class Member:
 
 	def __str__(self):
 		return (
-			f"Member ID: {self.id} | "
 			f"{self.first_name} {self.last_name} | "
+			f"Member ID: {self.id} | "
 			f"{self.rank} | {self.age} | {self.phone} | "
 			f"{self.email} | Joined: {self.date_joined.strftime("%d-%b-%Y")} | "
 			f"Membership Status: {self.status}"
@@ -131,5 +134,36 @@ class Member:
 		if value not in STATUS:
 			raise ValueError("not a valid membership status")
 		self._status = value
+
+
+class Session(BaseModel):
+	model_config = ConfigDict(frozen=False)
+	id: int | None = None
+	title: str
+	day_of_week: str
+	start_time: time
+	end_time: time
+	gi_nogi: str
+
+	@computed_field
+	@property
+	def duration(self) -> int:
+		start = datetime.combine(date.today(), self.start_time)
+		end = datetime.combine(date.today(), self.end_time)
+		return int((end - start).total_seconds() / 60)
+
+	@field_validator('start_time', 'end_time', mode='before')
+	@classmethod
+	def parse_time(cls, value):
+		if isinstance(value, str):
+			return datetime.strptime(value, "%H:%M").time()
+		return value
+
+
+
+
+
+
+
 
 	
