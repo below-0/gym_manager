@@ -135,6 +135,14 @@ class Member:
 			raise ValueError("not a valid membership status")
 		self._status = value
 
+	@property
+	def email(self):
+		return self._email
+	
+	@email.setter
+	def email(self, value):
+		self._email = value.strip().lower()
+
 
 class Session(BaseModel):
 	model_config = ConfigDict(frozen=False)
